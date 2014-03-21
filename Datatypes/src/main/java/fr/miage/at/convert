@@ -1,0 +1,7 @@
+METRIQUE ; g ; 3 ; 2 ; 1
+METRIQUE ; kg ; 3 ; 2 ; 1000
+IMPERIAL ; miles ; 1 ; 2 ; 42
+METRIQUE ; m ; 1 ; 2 ; 1
+METRIQUE ; km ; 1 ; 2 ; 1000
+METRIQUE ; mm ; 1 ; 2 ; 0.001
+METRIQUE ; cm ; 1 ; 2 ; 0.01
