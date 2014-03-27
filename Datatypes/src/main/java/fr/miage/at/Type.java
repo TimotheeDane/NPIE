@@ -1,9 +1,7 @@
-package fr.miage.at;
-
 import java.util.ArrayList;
 
 enum EnumType {
-	LONGUEUR, SURFACE, POIDS
+	DISTANCE, SUPERFICIE, POIDS, TEMPERATURE
 };
 
 public class Type {
@@ -11,16 +9,21 @@ public class Type {
 
 	// public ArrayList<Unites> unites;
 
-	public Type(int intitule) {
+	public Type(String intitule) {
 		switch (intitule) {
-		case 1:
-			this.intitule = EnumType.LONGUEUR;
+		case "DISTANCE":
+			this.intitule = EnumType.DISTANCE;
 			break;
-		case 2:
-			this.intitule = EnumType.SURFACE;
+		case "SURFACE":
+			this.intitule = EnumType.SUPERFICIE;
 			break;
-		case 3:
+		case "POIDS":
 			this.intitule = EnumType.POIDS;
+			break;
+		case "TEMPERATURE":
+			this.intitule = EnumType.TEMPERATURE;
+			break;
+		default:
 			break;
 		}
 	}

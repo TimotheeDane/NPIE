@@ -1,20 +1,22 @@
-package fr.miage.at;
+enum TypeConversion {
+	ADDITION, MULTIPLICATION, COMPLEXE
+}
 
 public class Conversion {
 	public double valeur;
 	public TypeConversion type;
 	
-	public Conversion(int type, double valeur) {
+	public Conversion(String type, double valeur) {
 		this.valeur = valeur;
 		
 		switch (type) {
-		case 1:
+		case "ADDITION":
 			this.type = TypeConversion.ADDITION;
 			break;
-		case 2:
+		case "MULTIPLICATION":
 			this.type = TypeConversion.MULTIPLICATION;
 			break;
-		case 3:
+		case "COMPLEXE":
 			this.type = TypeConversion.COMPLEXE;
 			break;
 		}
@@ -35,8 +37,4 @@ public class Conversion {
 	public void setType(TypeConversion type) {
 		this.type = type;
 	}
-}
-
-enum TypeConversion {
-	ADDITION, MULTIPLICATION, COMPLEXE
 }

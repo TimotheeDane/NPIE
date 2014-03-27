@@ -1,5 +1,3 @@
-package fr.miage.at;
-
 import java.util.ArrayList;
 
 public class Systeme {

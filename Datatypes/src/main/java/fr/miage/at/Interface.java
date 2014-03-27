@@ -1,5 +1,3 @@
-package fr.miage.at;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -28,58 +26,60 @@ public class Interface {
 
 		Scanner scan = new Scanner(System.in);
 		System.out.println("=========================================");
-		System.out.println("========== Conversion d'unitï¿½s ==========");
+		System.out.println("========== Conversion d'unités ==========");
 		System.out.println("=========================================");
-		
+
 		boolean ok = false;
 		while (!ok) {
-			System.out.print("Unitï¿½ de dï¿½part : ");
+			System.out.print("Unité de départ : ");
 			rep = scan.nextLine();
-			
-			for (i = 0 ; i < listeSystemes.size() ; i++) {
-				for (j = 0 ; j < listeSystemes.get(i).getUnit().size() ; j++) {
-					if (listeSystemes.get(i).getUnit().get(j).getNom().equals(rep)) {
+
+			for (i = 0; i < listeSystemes.size(); i++) {
+				for (j = 0; j < listeSystemes.get(i).getUnit().size(); j++) {
+					if (listeSystemes.get(i).getUnit().get(j).getNom()
+							.equals(rep)) {
 						ok = true;
 						uniteDep = listeSystemes.get(i).getUnit().get(j);
 					}
 				}
 			}
-			
+
 			if (!ok) {
-				System.out.println("Unitï¿½ inexistante");
+				System.out.println("Unité inexistante");
 			}
 		}
-		
-		System.out.print("Valeur de l'unitï¿½ de dï¿½part : ");
+
+		System.out.print("Valeur de l'unité de départ : ");
 		val = scan.nextDouble();
 		scan.nextLine();
 		valDep = new Montant(val, uniteDep);
-		
+
 		ok = false;
-		while(!ok) {
-			System.out.print("Unitï¿½ d'arrivï¿½e : ");
+		while (!ok) {
+			System.out.print("Unité d'arrivée : ");
 			rep = scan.nextLine();
-			
-			for (i = 0 ; i < listeSystemes.size() ; i++) {
-				for (j = 0 ; j < listeSystemes.get(i).getUnit().size() ; j++) {
-					if (listeSystemes.get(i).getUnit().get(j).getNom().equals(rep)) {
+
+			for (i = 0; i < listeSystemes.size(); i++) {
+				for (j = 0; j < listeSystemes.get(i).getUnit().size(); j++) {
+					if (listeSystemes.get(i).getUnit().get(j).getNom()
+							.equals(rep)) {
 						ok = true;
 						uniteArr = listeSystemes.get(i).getUnit().get(j);
 					}
 				}
 			}
-			
+
 			if (!ok) {
-				System.out.println("Unitï¿½ inexistante");
+				System.out.println("Unité inexistante");
 			}
 		}
-		
+
 		valArr.setUnite(uniteArr);
 		valArr.convert(valDep);
 
-		System.out.println("Valeur de l'unitï¿½ d'arrivï¿½e : "
+		System.out.println("Valeur de l'unité d'arrivée : "
 				+ valArr.getValeur());
-		
+
 		scan.close();
 	}
 
@@ -107,9 +107,11 @@ public class Interface {
 					}
 				}
 
-				Conversion conv = new Conversion(Integer.parseInt(ligneFichier[4]), Double.parseDouble(ligneFichier[5]));
-				Type nouveauType = new Type(Integer.parseInt(ligneFichier[2]));
-				Unite nouvelleUnite = new Unite(ligneFichier[1], nouveauType, conv);
+				Conversion conv = new Conversion(ligneFichier[3],
+						Double.parseDouble(ligneFichier[4]));
+				Type nouveauType = new Type(ligneFichier[2]);
+				Unite nouvelleUnite = new Unite(ligneFichier[1], nouveauType,
+						conv);
 
 				if (!existe) {
 					Systeme sys = new Systeme(ligneFichier[0]);
@@ -123,16 +125,17 @@ public class Interface {
 						}
 					}
 				}
-
 			}
-			
+
 			int j;
-			for (i = 0 ; i < listeSystemes.size(); i++) {
+			for (i = 0; i < listeSystemes.size(); i++) {
 				System.out.println(listeSystemes.get(i).getNom());
-				for (j = 0 ; j < listeSystemes.get(i).getUnit().size() ; j++) {
-					System.out.println(listeSystemes.get(i).getUnit().get(j).getNom());
+				for (j = 0; j < listeSystemes.get(i).getUnit().size(); j++) {
+					System.out.println(listeSystemes.get(i).getUnit().get(j)
+							.getNom());
 				}
 			}
+
 			br.close();
 		} catch (Exception e) {
 			System.out.println(e.toString());

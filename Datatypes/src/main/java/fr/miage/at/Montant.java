@@ -1,4 +1,4 @@
-package fr.miage.at;
+
 public class Montant {
 	public double valeur;
 	public Unite unite;
@@ -28,10 +28,10 @@ public class Montant {
 		
 		switch (unite.getConv().getType()) {
 		case ADDITION:
-			val = val - valDep.getUnite().getConv().getValeur();
+			val = val - unite.getConv().getValeur();
 			break;
 		case MULTIPLICATION:
-			val = val / valDep.getUnite().getConv().getValeur();
+			val = val / unite.getConv().getValeur();
 			break;
 		case COMPLEXE:
 			break;
@@ -39,6 +39,7 @@ public class Montant {
 			break;
 		}
 		
+		System.out.println(val);
 		valeur = val;
 	}
 	
