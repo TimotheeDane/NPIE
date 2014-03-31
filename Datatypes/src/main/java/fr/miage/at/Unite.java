@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-
-
 public class Unite {
 
 	public String nom;
@@ -32,5 +29,13 @@ public class Unite {
 
 	public void setConv(Conversion conv) {
 		this.conv = conv;
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
 	}
 }

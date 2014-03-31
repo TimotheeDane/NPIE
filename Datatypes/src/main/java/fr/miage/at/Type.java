@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 enum EnumType {
 	DISTANCE, SUPERFICIE, POIDS, TEMPERATURE
 };
@@ -7,14 +5,12 @@ enum EnumType {
 public class Type {
 	public EnumType intitule;
 
-	// public ArrayList<Unites> unites;
-
 	public Type(String intitule) {
 		switch (intitule) {
 		case "DISTANCE":
 			this.intitule = EnumType.DISTANCE;
 			break;
-		case "SURFACE":
+		case "SUPERFICIE":
 			this.intitule = EnumType.SUPERFICIE;
 			break;
 		case "POIDS":
