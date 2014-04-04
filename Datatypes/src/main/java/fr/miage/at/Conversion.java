@@ -1,11 +1,17 @@
 package fr.miage.at;
 
+enum TypeConversion {
+	ADDITION, MULTIPLICATION, COMPLEXE
+}
+
 public class Conversion {
 	public double valeur;
+	public double valeurComplexe;
 	public TypeConversion type;
 	
-	public Conversion(int type, double valeur) {
+	public Conversion(int type, double valeur, double valeur2) {
 		this.valeur = valeur;
+		valeurComplexe = valeur2;
 		
 		switch (type) {
 		case 1:
@@ -28,6 +34,14 @@ public class Conversion {
 		this.valeur = valeur;
 	}
 
+	public double getValeurComplexe() {
+		return valeurComplexe;
+	}
+
+	public void setValeurComplexe(double valeurComplexe) {
+		this.valeurComplexe = valeurComplexe;
+	}
+
 	public TypeConversion getType() {
 		return type;
 	}
@@ -35,8 +49,4 @@ public class Conversion {
 	public void setType(TypeConversion type) {
 		this.type = type;
 	}
-}
-
-enum TypeConversion {
-	ADDITION, MULTIPLICATION, COMPLEXE
 }

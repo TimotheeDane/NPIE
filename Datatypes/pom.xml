@@ -34,10 +34,52 @@
                     <minimumTokens>100</minimumTokens>
                     <targetJdk>1.5</targetJdk>
                     <rulesets>
-                        <ruleset>/rulesets/sunsecure.xml</ruleset>
+                       <ruleset>/rulesets/sunsecure.xml</ruleset>
+                        <ruleset>/rulesets/naming.xml</ruleset>
                     </rulesets>
                 </configuration>
             </plugin>
         </plugins>
     </reporting>
+    
+    
+     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <showWarnings>true</showWarnings>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <linkXRef>true</linkXRef>
+                    <rulesets>
+                        <rulset>rulesets/java/sunsecure.xml</rulset>
+                        <rulset>rulesets/java/naming.xml</rulset>
+                        <rulset>rulesets/java/braces.xml</rulset>
+                        <rulset>rulesets/java/coupling.xml</rulset>
+                    </rulesets>
+                </configuration>
+
+            </plugin>
+            <plugin> 
+                <groupId>org.apache.maven.plugins</groupId> 
+                <artifactId>maven-checkstyle-plugin</artifactId> 
+                <version>2.3.2</version>
+                <configuration> 
+                    <configLocation>config/maven_checks.xml</configLocation> 
+                </configuration> 
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
