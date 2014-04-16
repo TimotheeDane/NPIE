@@ -1,9 +1,18 @@
 package fr.miage.at;
 
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
+/* Class Montant
+ * 
+* Authors : DANE & GUIFFAULT
+ * Licence GNU GPL V3
+ * Last version : 16 / 04 / 2014
+ */
 public class Montant {
 	public double valeur;
 	public Unite unite;
 	
+        //construct
 	public Montant(){}
 	
 	public Montant(double val, Unite unite){
@@ -11,34 +20,43 @@ public class Montant {
 		this.unite = unite;
 	}
 	
+        //conversion as a function of the type of conversion
 	public void convert(Montant valDep) {
 		double val = valDep.getValeur();
-		
-		switch (valDep.getUnite().getConv().getType()) {
+                
+		Unite unit = valDep.getUnite();
+                Conversion conv = unit.getConv();
+
+                //retrieving type
+                //call the corresponding calculation
+		switch (conv.getType()) {
 		case ADDITION:
-			val = val - valDep.getUnite().getConv().getValeur();
+			val = conv.calculAdd(val);
 			break;
 		case MULTIPLICATION:
-			val = val * valDep.getUnite().getConv().getValeur();
+			val = conv.calculMul(val);
 			break;
 		case COMPLEXE:
-			val = val - valDep.getUnite().getConv().getValeur();
-			val = val * valDep.getUnite().getConv().getValeurComplexe();
+                        val = conv.calculComplexe(val);
 			break;
 		default:
 			break;
 		}
 		
-		switch (unite.getConv().getType()) {
+                //retrieving the value
+                conv = unite.getConv();
+                valeur = conv.getValeur();
+		switch (conv.getType()) {
 		case ADDITION:
-			val = val + unite.getConv().getValeur();
+			val = val + valeur;
 			break;
 		case MULTIPLICATION:
-			val = val / unite.getConv().getValeur();
+			val = val /valeur;
 			break;
 		case COMPLEXE:
-			val = val / unite.getConv().getValeurComplexe();
-			val = val + unite.getConv().getValeur();
+                        double valeurComp = conv.getValeurComplexe();
+			val = val / valeurComp;
+			val = val + valeur;
 			break;
 		default:
 			break;
@@ -47,6 +65,7 @@ public class Montant {
 		valeur = val;
 	}
 	
+        //getter and setter
 	public double getValeur() {
 		return valeur;
 	}

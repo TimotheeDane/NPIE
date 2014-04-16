@@ -4,10 +4,17 @@ enum EnumType {
 	DISTANCE, SUPERFICIE, POIDS, TEMPERATURE
 };
 
-public class Type {
+/* Class TypeUnite
+ * 
+* Authors : DANE & GUIFFAULT
+ * Licence GNU GPL V3
+ * Last version : 16 / 04 / 2014
+ */
+public class TypeUnite {
 	public EnumType intitule;
 
-	public Type(int intitule) {
+        //constuct for enum
+	public TypeUnite(int intitule) {
 		switch (intitule) {
 		case 1:
 			this.intitule = EnumType.DISTANCE;
@@ -26,6 +33,7 @@ public class Type {
 		}
 	}
 
+        //getter and setter
 	public EnumType getIntitule() {
 		return intitule;
 	}

@@ -1,22 +1,29 @@
 package fr.miage.at;
 
+
+/* Class Unite
+ * 
+* Authors : DANE & GUIFFAULT
+ * Licence GNU GPL V3
+ * Last version : 16 / 04 / 2014
+ */
 public class Unite {
 
 	public String nom;
 	public Systeme systeme;
-	public Type type;
+	public TypeUnite type;
 	public Conversion conv;
 	
-	public Unite(String name, Type type, Conversion conversion){
+        //construct
+	public Unite(String name, TypeUnite type, Conversion conversion){
 		nom = name;
 		this.type = type;
 		conv = conversion;
 	}
 	
-	public Unite() {
-		
-	}
+	public Unite() {}
 
+        //getter and setter
 	public String getNom() {
 		return nom;
 	}
@@ -33,11 +40,11 @@ public class Unite {
 		this.conv = conv;
 	}
 
-	public Type getType() {
+	public TypeUnite getType() {
 		return type;
 	}
 
-	public void setType(Type type) {
+	public void setType(TypeUnite type) {
 		this.type = type;
 	}
 }

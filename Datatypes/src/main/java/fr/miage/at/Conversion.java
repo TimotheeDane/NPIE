@@ -4,11 +4,19 @@ enum TypeConversion {
 	ADDITION, MULTIPLICATION, COMPLEXE
 }
 
+
+/* Class Conversion
+ * 
+ * Authors : DANE & GUIFFAULT
+ * Licence GNU GPL V3
+ * Last version : 16 / 04 / 2014
+ */
 public class Conversion {
 	public double valeur;
 	public double valeurComplexe;
 	public TypeConversion type;
 	
+        //constuct
 	public Conversion(int type, double valeur, double valeur2) {
 		this.valeur = valeur;
 		valeurComplexe = valeur2;
@@ -26,6 +34,7 @@ public class Conversion {
 		}
 	}
 
+        //getters and setters
 	public double getValeur() {
 		return valeur;
 	}
@@ -49,4 +58,26 @@ public class Conversion {
 	public void setType(TypeConversion type) {
 		this.type = type;
 	}
+        
+        
+        //operations
+        
+        //calculating a complex-valued
+        public double calculComplexe(double val){
+            val = val - valeur;
+            val = val * valeurComplexe;
+            return val;
+        }
+        
+        //calculating a value from the addition
+        public double calculAdd(double val){
+            val = val - valeur;
+            return val;
+        }
+        
+        //calculating a value by multiplication
+        public double calculMul(double val){
+            val = val * valeur;
+            return val;
+        }
 }

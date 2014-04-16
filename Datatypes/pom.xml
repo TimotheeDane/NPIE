@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xml:lang="en">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>fr.miage.at</groupId>
@@ -22,7 +22,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-    <reporting>
+   <reporting>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -45,7 +45,28 @@
     
      <build>
         <plugins>
+             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.0-beta-3</version>
+                <configuration>
+                 <reportPlugins> <!-- Ici 1 seul rapport , celui des informations standards du POM-->
+                  <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>2.0.1</version>
+                  </plugin>
+                 </reportPlugins>
+                </configuration>
+               </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.6</version>
+            </plugin>
+
+            
+           <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
@@ -79,7 +100,66 @@
                     <configLocation>config/maven_checks.xml</configLocation> 
                 </configuration> 
             </plugin>
+            
         </plugins>
     </build>
+    
+    <developers>
+    <developer>
+        <id>DANE</id>
+        <name>Timothée Dane</name>
+        <email>timothee.dane@etu.univ-nantes.fr</email>
+        <roles>
+            <role>Developper</role>
+        </roles>
+        <timezone>1</timezone>
+    </developer>
+    <developer>
+        <id>GUIFFAULT</id>
+        <name>Alex Guiffault</name>
+        <email>alex.guiffault@etu.univ-nantes.fr</email>
+        <roles>
+            <role>Developper</role>
+        </roles>
+        <timezone>1</timezone>
+    </developer>
+</developers>
+
+<licenses>
+    <license>
+        <name>GNU GPL V3</name>
+        <url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+        <distribution>repo</distribution>
+		<comments>Free</comments>
+    </license>
+</licenses>
+
+<description>Datatypes is a project of MIAGE of Nantes. It is a convertor develop by Timothée DANE and Alex GUIFFAULT.</description>
+
+<organization>
+    <name>University of Nantes</name>
+    <url>http://www.univ-nantes.fr</url>
+</organization>
+
+<scm>
+    <connection>https://github.com/TimotheeDane/NPIE</connection>
+    <url>https://github.com/TimotheeDane/NPIE</url>
+    <tag>HEAD</tag>
+</scm>
+
+<ciManagement>
+	<system>Github</system>
+	<url>https://github.com/TimotheeDane/NPIE</url>
+	<notifiers>
+	<notifier>
+			<type>mail</type>
+			<address>alex.guiffault@etu.univ-nantes.fr</address>
+			<sendOnError>true</sendOnError>
+			<sendOnFailure>true</sendOnFailure>
+			<sendOnSuccess>false</sendOnSuccess>
+			<sendOnWarning>false</sendOnWarning>
+		</notifier>
+	</notifiers>
+</ciManagement>
 
 </project>

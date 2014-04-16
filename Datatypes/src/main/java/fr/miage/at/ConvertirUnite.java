@@ -1,50 +1,73 @@
 package fr.miage.at;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-public class Interface {
+/* Class ConvertirUnite
+ * 
+ * void main
+ * void init
+ * void menuConversion
+ * void ajoutUnite
+ * void ajoutMemoire
+ * void ajoutFichier
+ * void affichage 
+ * 
+ * Authors : DANE & GUIFFAULT
+ * Licence GNU GPL V3
+ * Last version : 16 / 04 / 2014
+ */
+public class ConvertirUnite {
 
-	public static ArrayList<Systeme> listeSystemes = new ArrayList<Systeme>();
+	public static List<Systeme> listeSystemes;
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
+                //initialization data memory
 		init();
 		Scanner scan = new Scanner(System.in);
 		boolean menu = true;
-
+                //display the main menu
 		while (menu) {
 			System.out.println("=========================================");
-			System.out.println("========== Conversion d'unit�s ==========");
+			System.out.println("========== Conversion d'unites ==========");
 			System.out.println("=========================================");
 			System.out.println("Que souhaitez-vous faire ?");
 			System.out.println("1 - Effectuer une conversion");
-			System.out.println("2 - Ajouter une unit�");
-			System.out.println("3 - Consulter la liste des unit�s disponibles");
+			System.out.println("2 - Ajouter une unite");
+			System.out.println("3 - Consulter la liste des unites disponibles");
 			System.out.println("0 - Quitter");
-			String choix = scan.next();
+			String choix = scan.nextLine();
                         int choixInt = Integer.parseInt(choix);
 			switch (choixInt) {
 			case 1:
+                                //convert 2 units
 				menuConversion(scan);
 				break;
 			case 2:
+                                //add new unit
 				menuAjout(scan);
 				break;
 			case 3:
+                                //display available unit
+                                affichage(scan);
 				break;
 			case 0:
+                                //exit application
 				menu = false;
 				break;
 			default:
-				System.out
-						.println("Erreur, choisissez une valeur entre 0 et 3");
+				System.out.println("Erreur, choisissez une valeur entre 0 et 3");
 				break;
 			}
 		}
@@ -52,301 +75,498 @@ public class Interface {
 		scan.close();
 	}
 
+        //initialization function from file
 	public static void init() {
-		String fichier = "C:\\Users\\Alex\\Downloads\\eclipse\\workspace\\Units_project\\src\\convert";
-		String[] ligneFichier;
-		int i;
+                listeSystemes = new ArrayList<Systeme>();
+		String fichier = "src/main/java/fr/miage/at/convert";
+		
+		int cpt;
 		boolean existe;
 
+                //read file
 		try {
 			InputStream ips = new FileInputStream(fichier);
 			InputStreamReader ipsr = new InputStreamReader(ips);
-			BufferedReader br = new BufferedReader(ipsr);
+			BufferedReader buffer  = new BufferedReader(ipsr);
 			String ligne;
-			while ((ligne = br.readLine()) != null) {
-				i = 0;
+                        String[] ligneFichier;
+                        String ligneF, ligneF3, ligneF4;
+                        String comp0, comp1;
+                        //read line by line
+			while ((ligne = buffer.readLine()) != null) {
+				cpt = 0;
 				existe = false;
-
+                                //decomposition of the line
 				ligneFichier = ligne.split(" ; ");
-				while (i < listeSystemes.size() && !existe) {
-					if (ligneFichier[0].equals(listeSystemes.get(i).getNom())) {
+                                //system recovery
+				while (cpt < listeSystemes.size() && !existe) {
+                                        Object obj = listeSystemes.get(cpt);
+                                        Systeme sys = (Systeme)obj;
+                                        String sysNom = sys.getNom();
+                                        ligneF = ligneFichier[0];
+					if (ligneF.equals(sysNom)) {
 						existe = true;
 					} else {
-						i++;
+						cpt++;
 					}
 				}
 
 				Conversion conv;
-
-				if (ligneFichier[3].equals("COMPLEXE")) {
-					String[] complexe = ligneFichier[4].split("/");
-					conv = new Conversion(Integer.parseInt(ligneFichier[3]),
-							Double.parseDouble(complexe[0]),
-							Double.parseDouble(complexe[1]));
+                                //recovery type conversion
+                                ligneF3 = ligneFichier[3];
+                                ligneF4 = ligneFichier[4];
+				if (ligneF3.equals("3")) {                                      
+					String[] complexe = ligneF4.split("/");
+                                        comp0 = complexe[0];
+                                        comp1 = complexe[1];
+					conv = new Conversion(Integer.parseInt(ligneF3),
+							Double.parseDouble(comp0),
+							Double.parseDouble(comp1));
 				} else {
-					conv = new Conversion(Integer.parseInt(ligneFichier[3]),
-							Double.parseDouble(ligneFichier[4]), 0);
+					conv = new Conversion(Integer.parseInt(ligneF3),
+							Double.parseDouble(ligneF4), 0);
 				}
 
-				Type nouveauType = new Type(Integer.parseInt(ligneFichier[2]));
-				Unite nouvelleUnite = new Unite(ligneFichier[1], nouveauType,
+                                //recovery on the type of unit
+                                ligneF = ligneFichier[2];
+				TypeUnite nouveauType = new TypeUnite(Integer.parseInt(ligneF));
+                                ligneF = ligneFichier[1];
+				Unite nouvelleUnite = new Unite(ligneF, nouveauType,
 						conv);
 
-				if (!existe) {
-					Systeme sys = new Systeme(ligneFichier[0]);
-					sys.getUnit().add(nouvelleUnite);
+				//add unit in the system
+                                if (!existe) {
+                                        List<Unite> unit;
+                                        ligneF = ligneFichier[0];
+					Systeme sys = new Systeme(ligneF);
+                                        unit = sys.getUnit();
+					unit.add(nouvelleUnite);
 					listeSystemes.add(sys);
 				} else {
-					for (i = 0; i < listeSystemes.size(); i++) {
-						if (listeSystemes.get(i).getNom()
-								.equals(ligneFichier[0])) {
-							listeSystemes.get(i).getUnit().add(nouvelleUnite);
+                                        Systeme sys;
+                                        String name;
+					for (cpt = 0; cpt < listeSystemes.size(); cpt++) {
+                                                sys = listeSystemes.get(cpt);
+                                                name = sys.getNom();
+                                                ligneF = ligneFichier[0];
+						if (name.equals(ligneF)) {
+							listeSystemes.get(cpt).getUnit().add(nouvelleUnite);
 						}
 					}
 				}
 			}
 
-			/*int j;
-			for (i = 0; i < listeSystemes.size(); i++) {
-				System.out.println(listeSystemes.get(i).getNom());
-				for (j = 0; j < listeSystemes.get(i).getUnit().size(); j++) {
-					System.out.println(listeSystemes.get(i).getUnit().get(j)
-							.getNom());
-				}
-			}*/
-
-			br.close();
+			buffer.close();
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
 	}
 
+        /**
+	 * @param scan
+	 */
+        //convert between 2 units
 	public static void menuConversion(Scanner scan) {
 		String rep = "";
 		double val = 0.0;
-		int i, j;
-
+		int cpt1, cpt2;
+                
 		Montant valDep = null;
 		Montant valArr = new Montant();
 		Unite uniteDep = new Unite();
 		Unite uniteArr = new Unite();
 
-		boolean ok = false;
-		while (!ok) {
-			System.out.print("Unit� de d�part : ");
+                Systeme tempSys;
+                List<Unite> tempUnit;
+                Unite unit;
+                String tempName;
+                
+		boolean trouve = false;
+                //get the starting unit will be converted
+		while (!trouve) {
+			System.out.print("Unite de depart : ");
 			rep = scan.nextLine();
-
-			for (i = 0; i < listeSystemes.size(); i++) {
-				for (j = 0; j < listeSystemes.get(i).getUnit().size(); j++) {
-					if (listeSystemes.get(i).getUnit().get(j).getNom()
-							.equals(rep)) {
-						ok = true;
-						uniteDep = listeSystemes.get(i).getUnit().get(j);
+                        //way verification of the existence of units
+			for (cpt1 = 0; cpt1 < listeSystemes.size(); cpt1++) {
+                                tempSys = listeSystemes.get(cpt1);
+                                tempUnit = tempSys.getUnit();
+				for (cpt2 = 0; cpt2< tempUnit.size(); cpt2++) {
+                                        unit = tempUnit.get(cpt2);
+                                        tempName = unit.getNom();
+					if (tempName.equals(rep)) {
+						trouve = true;
+						uniteDep = unit;
 					}
 				}
 			}
 
-			if (!ok) {
-				System.out.println("Unit� inexistante");
+			if (!trouve) {
+				System.out.println("Unite inexistante");
 			}
 		}
 
-		ok = false;
-		while (!ok) {
-
+		trouve = false;
+                //retrieving the value to convert
+		while (!trouve) {
 			try {
-				System.out.print("Valeur de l'unit� de d�part : ");
+				System.out.print("Valeur de l'unite de depart : ");
 				val = scan.nextDouble();
 				scan.nextLine();
 				valDep = new Montant(val, uniteDep);
-				ok = true;
+				trouve = true;
 			} catch (Exception e) {
-				System.out.println("Veuillez entrer une valeur enti�re ou d�cimale (XX,XX)");
+				System.out.println("Veuillez entrer une valeur enti�re ou decimale (XX,XX)");
 				scan.nextLine();
 			}
 		}
 
-		ok = false;
-		while (!ok) {
-			System.out.print("Unit� d'arriv�e : ");
+                //recovery unit of arrival
+		trouve = false;
+		while (!trouve) {
+			System.out.print("Unite d'arrivee : ");
 			rep = scan.nextLine();
-
-			for (i = 0; i < listeSystemes.size(); i++) {
-				for (j = 0; j < listeSystemes.get(i).getUnit().size(); j++) {
-					if (listeSystemes.get(i).getUnit().get(j).getNom()
-							.equals(rep)) {
-						ok = true;
-						uniteArr = listeSystemes.get(i).getUnit().get(j);
+			for (cpt1 = 0; cpt1 < listeSystemes.size(); cpt1++) {
+                                tempSys = listeSystemes.get(cpt1);
+                                tempUnit = tempSys.getUnit();
+				for (cpt2 = 0; cpt2 < tempUnit.size(); cpt2++) {
+                                        unit = tempUnit.get(cpt2);
+                                        tempName = unit.getNom();
+					if (tempName.equals(rep)) {
+						trouve = true;
+						uniteArr = unit;
 					}
 				}
 			}
 
-			if (!ok) {
-				System.out.println("Unit� inexistante");
+			if (!trouve) {
+				System.out.println("Unite inexistante");
 			}
 		}
 
 		valArr.setUnite(uniteArr);
+                
 		valArr.convert(valDep);
-
-		System.out.println("Valeur de l'unit� d'arriv�e : "
+                //display the value of the converted unit
+		System.out.println("Valeur de l'unite d'arrivee : "
 				+ valArr.getValeur());
 	}
 
+         /**
+	 * @param scan
+	 */
+        //add new unit
 	public static void menuAjout(Scanner scan) {
-		boolean ok = false;
+		boolean trouveSys = false;
 		String systeme = "";
+                String typeUnit="";
 
-		while (!ok) {
+                Systeme tempSys;
+                List<Unite> tempUnit;
+                Unite unit;
+                EnumType tempInti;
+                String tempIntiString;
+                String tempName;
+                Conversion tempConv;
+                
+                //verification of the existence of the system that contains the new unit
+		while (!trouveSys) {
 			System.out
-					.println("Dans quel syst�me fait partie l'unit� que vous voulez ajouter ? (METRIQUE / IMPERIAL / HORS-SYSTEME)");
-			systeme = scan.next();
+					.println("Dans quel systeme fait partie l'unite que vous voulez ajouter ? (METRIQUE / IMPERIAL / HORS-SYSTEME)");
+			systeme = scan.nextLine();
 
 			systeme = systeme.toUpperCase();
 			if (systeme.equals("METRIQUE") || systeme.equals("IMPERIAL")
 					|| systeme.equals("HORS-SYSTEME")) {
-				ok = true;
+				trouveSys = true;
 			} else {
-				System.out
-						.println("Le syst�me n'existe pas, veuillez entrer un syst�me existant");
+				System.out.println("Le systeme n'existe pas, veuillez entrer un systeme existant");
 			}
 		}
 
+                //recovery system
 		Systeme syst = null;
-		for (Systeme s : listeSystemes) {
-			if (s.getNom().equals(systeme)) {
-				syst = s;
+                String listName;
+		for (Systeme liste : listeSystemes) {
+                        listName = liste.getNom();
+			if (listName.equals(systeme)) {
+				syst = liste;
 			}
 		}
 
-		ok = false;
-		int i = 0;
+		trouveSys = false;
+		int cpt = 0;
 		boolean trouve = false;
-		Type typ = null;
-		System.out.println("De quel type votre unit� va-t-elle faire partie ?");
-		String type = scan.next();
-
+		TypeUnite typ = null;
+                //recovery on the type of unit
+		System.out.println("De quel type votre unite va-t-elle faire partie ?");
+		String type = scan.nextLine();
+                
+                tempUnit = syst.getUnit();
 		type = type.toUpperCase();
-		while (!trouve && i < syst.getUnit().size()) {
-			Unite unit = syst.getUnit().get(i);
-			if (unit.getType().getIntitule().toString().equals(type)) {
+                TypeUnite tempType;
+		while (!trouve && cpt < tempUnit.size()) {
+			unit = tempUnit.get(cpt);
+                        tempType = unit.getType();
+                        tempInti = tempType.getIntitule();
+                        tempIntiString =  tempInti.toString();
+			if (tempIntiString.equals(type)) {
 				typ = unit.getType();
 				trouve = true;
+                                
+                                if(type.equals("DISTANCE")){
+                                    typeUnit = "1";
+                                }else if(type.equals("SUPERFICIE")){
+                                    typeUnit = "2";
+                                } else if(type.equals("POIDS")){
+                                    typeUnit = "3";
+                                } else {
+                                    typeUnit = "4";
+                                }
 			}
-			i++;
+			cpt++;
 		}
 		
 		boolean typeAjoute = false;
 
 		if (trouve) {
-			ok = true;
+			trouveSys = true;
 		} else {
-			System.out
-					.println("Type inexistant, voulez-vous l'ajouter ? (o/n)");
-			String rep = scan.next();
-			rep.toLowerCase();
-
-			if (rep.equals("o")) {
-				ok = true;
-				typeAjoute = true;
-			} else {
-				System.out.println("Op�ration annul�e, retour au menu");
-			}
+			System.out.println("Type inexistant");	
 		}
 		
+                //add unit
 		String unite = "";
-		if (ok) {
-			ok = false;
-			while (!ok) {
+		if (trouveSys) {
+			trouveSys = false;
+			while (!trouveSys) {
 				trouve = false;
-				System.out.println("Quelle unit� voulez-vous ajouter ?");
-				unite = scan.next();
+				System.out.println("Quelle unite voulez-vous ajouter ?");
+				unite = scan.nextLine();
 				unite = unite.toLowerCase();
-				i = 0;
-				while (!trouve && i < syst.getUnit().size()) {
-					Unite unit = syst.getUnit().get(i);
-					if (unit.getNom().equals(unite)) {
+				cpt = 0;
+                                tempUnit = syst.getUnit();
+				while (!trouve && cpt < tempUnit.size()) {
+					unit = tempUnit.get(cpt);
+                                        tempName = unit.getNom();
+					if (tempName.equals(unite)) {
 						trouve = true;
 					}
-					i++;
+					cpt++;
 				}
 
 				if (!trouve) {
-					ok = true;
+					trouveSys = true;
 				} else {
-					System.out.print("L'unit� existe d�j�. ");
+					System.out.print("L'unite existe deja. ");
 				}
 			}
 			
 			String ajoutLigne = "";
-			if (typeAjoute) {
-				// Unit� �talon
-				ajoutLigne = systeme + " ; " + unite + " ; " + type + " ; MULTIPLICATION ; 1";
-				System.out.println(ajoutLigne);
-			} else {
-				String etalon = "";
-				trouve = false;
-				i = 0;
-				for (Systeme s : listeSystemes) {
-					while (!trouve && i < s.getUnit().size()) {
-						Unite unit = s.getUnit().get(i);
-						if (unit.getType().getIntitule().toString().equals(type) && unit.getConv().getValeur() == 1) {
-							trouve = true;
-							etalon = unit.getNom();
-						}
-						i++;
-					}
-				}
-				
-				if (!trouve) {
-					System.out.println("Fichier corrompu. Pas d'unit� �talon pour ce type");
-				} else {
-					ok = false;
-					System.out.println("Quel type d'op�ration pour convertir vers l'unit� " + etalon + " ? (MULTIPLICATION / ADDITION / COMPLEXE)");
-					String operation = scan.next();
-					operation = operation.toUpperCase();
-					while (!ok) {
-						double valeur = 0;
-						
-						try {
-							ok = true;
-							if (operation.equals("COMPLEXE")) {
-								System.out.println("Premi�re valeur pour convertir vers " + etalon + " ? (Addition)");
-								valeur = scan.nextDouble();
-								ajoutLigne = systeme + " ; " + unite + " ; " + type + " ; " + operation + " ; " + String.valueOf(valeur);
-								System.out.println("Seconde valeur pour convertir vers " + etalon + " ? (Multiplication)");
-								valeur = scan.nextDouble();
-								ajoutLigne += "/" + String.valueOf(valeur);
-							} else if (operation.equals("MULTIPLICATION") || operation.equals("ADDITION")) {
-								System.out.println("Combien faut-il pour faire 1" + etalon + " ?");
-								valeur = scan.nextDouble();
-								ajoutLigne = systeme + " ; " + unite + " ; " + type + " ; " + operation + " ; " + String.valueOf(valeur); 
-							} else {
-								ok = false;
-								System.out.println("Merci de choisir une op�ration existante");
-								System.out.println("Quel type d'op�ration pour convertir vers l'unit� " + etalon + " ? (MULTIPLICATION / ADDITION / COMPLEXE)");
-								operation = scan.next();
-								operation = operation.toUpperCase();
-							}
-							
-						} catch (Exception e) {
-							System.out.println("Merci de choisir une valeur enti�re ou d�cimale (XX,XX)");
-							scan.next();
-							ok = false;
-						}
-					}
-				}
-				ajoutMemoire(ajoutLigne);
-				ajoutFichier(ajoutLigne);
-			}
+			
+                        String etalon = "";
+                        trouve = false;
+                        cpt = 0;
+                        //recovery units standard
+                        for (Systeme liste : listeSystemes) {
+                                tempUnit = liste.getUnit();
+                                while (!trouve && cpt < tempUnit.size()) {
+                                        unit = tempUnit.get(cpt);
+                                        tempType = unit.getType();
+                                        tempInti = tempType.getIntitule();
+                                        tempIntiString = tempInti.toString();
+                                        tempConv = unit.getConv();
+                                        if (tempIntiString.equals(type) && tempConv.getValeur() == 1) {
+                                                trouve = true;
+                                                etalon = unit.getNom();
+                                        }
+                                        cpt++;
+                                }
+                        }
+
+                        if (!trouve) {
+                                System.out.println("Fichier corrompu. Pas d'unite etalon pour ce type");
+                        } else {
+                                // recovery information conversion 
+                                // type of operation and value for conversion to the unit etalon
+                                trouveSys = false;
+                                System.out.println("Quel type d'operation pour convertir vers l'unite " + etalon + " ? (MULTIPLICATION / ADDITION / COMPLEXE)");
+                                String operation = scan.nextLine();
+                                operation = operation.toUpperCase();
+                                while (!trouveSys) {
+                                        double valeur = 0;
+                                        try {
+                                                trouveSys = true;
+                                                String typeCalc;
+                                                if (operation.equals("COMPLEXE")) {
+                                                        System.out.println("Premiere valeur pour convertir vers " + etalon + " ? (Addition)");
+                                                        valeur = scan.nextDouble();
+                                                        typeCalc = "3";
+                                                        ajoutLigne = systeme + " ; " + unite + " ; " + typeUnit + " ; " + typeCalc + " ; " + String.valueOf(valeur);
+                                                        System.out.println("Seconde valeur pour convertir vers " + etalon + " ? (Multiplication)");
+                                                        valeur = scan.nextDouble();
+                                                        ajoutLigne += "/" + String.valueOf(valeur);
+                                                } else if (operation.equals("MULTIPLICATION") || operation.equals("ADDITION")) {
+                                                        System.out.println("Combien faut-il pour faire 1" + etalon + " ?");
+                                                        valeur = scan.nextDouble();
+                                                        if(operation.equals("MULTIPLICATION") ){
+                                                            typeCalc = "2";
+                                                        } else{
+                                                            typeCalc = "1";
+                                                        }
+                                                        ajoutLigne = systeme + " ; " + unite + " ; " + typeUnit + " ; " + typeCalc + " ; " + String.valueOf(valeur); 
+                                                } else {
+                                                        trouveSys = false;
+                                                        System.out.println("Merci de choisir une operation existante");
+                                                        System.out.println("Quel type d'operation pour convertir vers l'unite " + etalon + " ? (MULTIPLICATION / ADDITION / COMPLEXE)");
+                                                        operation = scan.nextLine();
+                                                        operation = operation.toUpperCase();
+                                                }
+                                                scan.nextLine();
+
+                                        } catch (Exception e) {
+                                                System.out.println("Merci de choisir une valeur entiere ou decimale (XX,XX)");
+                                                scan.nextLine();
+                                                trouveSys = false;
+                                        }
+                                }
+                        }
+                        //addition of units in the current memory
+                        ajoutMemoire(ajoutLigne);
+                        //addition of units in the file
+                        ajoutFichier(ajoutLigne);
 		}
 	}
 	
+         /**
+	 * @param ajoutLigne
+	 */
+        //addition of units in the memory
 	public static void ajoutMemoire(String ajoutLigne){
-		
-	}
+            int cpt;
+            String ligneF0, ligneF1, ligneF2,ligneF3, ligneF4;
+            Systeme syst;
+            String name;
+            String comp1, comp0;
+            //path of systems
+            for (cpt = 0 ; cpt < listeSystemes.size() ; cpt++) {
+                String[] ligneFichier = ajoutLigne.split(" ; ");
+                syst = listeSystemes.get(cpt);
+                name = syst.getNom();
+                ligneF0 = ligneFichier[0];
+                //recovery system
+                if (name.equals(ligneF0)) {
+                    Conversion conv;
+                    ligneF3 = ligneFichier[3];
+                    ligneF4 = ligneFichier[4];
+                    //recovery type of conversion
+                    if (ligneF3.equals("3")) {                        
+                        String[] complexe = ligneF4.split("/");
+                        comp0 = complexe[0];
+                        comp1 = complexe[1];
+                        conv = new Conversion(Integer.parseInt(ligneF3),
+                        Double.parseDouble(comp0),
+                        Double.parseDouble(comp1));
+                    } else {
+                        conv = new Conversion(Integer.parseInt(ligneF3),
+                        Double.parseDouble(ligneF4), 0);
+                    }
+
+                    ligneF2 = ligneFichier[2];
+                    ligneF1 = ligneFichier[1];
+                    //addition to the type of unit and the unit
+                    TypeUnite nouveauType = new TypeUnite(Integer.parseInt(ligneF2));
+                    Unite nouvelleUnite = new Unite(ligneF1, nouveauType, conv);
+
+                    listeSystemes.get(cpt).getUnit().add(nouvelleUnite);
+
+               }
+
+            }
+
+         }
 	
+         /**
+	 * @param ajoutLigne
+	 */
+         //add the file unit
+         //write the line in the file
 	public static void ajoutFichier(String ajoutLigne){
-		
-	}
+            String adressedufichier = "src/main/java/fr/miage/at/convert";
+            try
+            {
+                FileWriter fwriter = new FileWriter(adressedufichier, true);
+                BufferedWriter output = new BufferedWriter(fwriter);
+                output.write("\n" + ajoutLigne);
+                output.flush();
+                output.close();
+            } catch(IOException ioe) {
+                System.out.print("Erreur : ");
+                ioe.printStackTrace();
+            }
+        }
+
+         /**
+	 * @param scan
+	 */
+        //display units available
+        public static void affichage(Scanner scan){
+            String reponse;
+            int cptAffiche;
+            int cpt;
+            boolean trouveSys = false;
+            String nomSys = "";
+            Systeme syst;
+            List<Unite> listeUnite;
+            Unite unit;
+            TypeUnite typeUnit;
+            
+            //recovery system
+            while (!trouveSys) {
+                    System.out
+                                    .println("Dans quel systeme fait partie l'unite que vous voulez afficher ? (METRIQUE / IMPERIAL / HORS-SYSTEME)");
+                    reponse = scan.nextLine();
+
+                    reponse = reponse.toUpperCase();
+                    if (reponse.equals("METRIQUE") || reponse.equals("IMPERIAL")
+                                    || reponse.equals("HORS-SYSTEME")) {
+                            trouveSys = true;
+                            nomSys = reponse;
+                    } else {
+                            System.out.println("Le systeme n'existe pas, veuillez entrer un systeme existant");
+                    }
+            }
+            
+            String listName;
+            syst = null;
+            for (Systeme liste : listeSystemes) {
+                listName = liste.getNom();
+                if (listName.equals(nomSys)) {
+                        syst = liste;
+                }
+            }
+            
+            //display units 10 through 10
+            int nonFin = 0;
+            listeUnite = syst.getUnit();
+            cptAffiche = listeUnite.size();
+            scan.nextLine();
+            for(cpt = 0; cpt < cptAffiche; cpt++){
+                    unit = listeUnite.get(cpt);
+                    typeUnit = unit.getType();
+                    System.out.println(unit.getNom() + " : " + typeUnit.getIntitule());
+                   
+                    if((cpt+1)%10 == 0 && cpt != 0 && (cpt+1) != cptAffiche){
+                        //asks the user whether to continue the display
+                        System.out.println("Souhaitez-vous continuer l'affichage ?(O/N)");
+                        reponse = scan.nextLine();
+                        reponse = reponse.toUpperCase();
+                        if(reponse.contains("N")){
+                            cpt = cptAffiche;
+                        }  
+                    }
+                }
+            
+            System.out.println("Fin de l'affichage");            
+        }
+        
 }
