@@ -549,7 +549,6 @@ public class ConvertirUnite {
             int nonFin = 0;
             listeUnite = syst.getUnit();
             cptAffiche = listeUnite.size();
-            scan.nextLine();
             for(cpt = 0; cpt < cptAffiche; cpt++){
                     unit = listeUnite.get(cpt);
                     typeUnit = unit.getType();
