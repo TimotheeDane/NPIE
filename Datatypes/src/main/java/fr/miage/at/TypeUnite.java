@@ -33,7 +33,7 @@ public class TypeUnite {
 		}
 	}
 
-        //getter and setter
+        //getters and setters
 	public EnumType getIntitule() {
 		return intitule;
 	}

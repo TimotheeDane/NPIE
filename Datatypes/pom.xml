@@ -134,7 +134,7 @@
     </license>
 </licenses>
 
-<description>Datatypes is a project of MIAGE of Nantes. It is a convertor develop by Timothée DANE and Alex GUIFFAULT.</description>
+<description>Datatypes is a project from MIAGE of Nantes. It is a convertor developped by Timothée DANE and Alex GUIFFAULT.</description>
 
 <organization>
     <name>University of Nantes</name>
@@ -153,7 +153,7 @@
 	<notifiers>
 	<notifier>
 			<type>mail</type>
-			<address>alex.guiffault@etu.univ-nantes.fr</address>
+			<address>timothee.dane@etu.univ-nantes.fr</address>
 			<sendOnError>true</sendOnError>
 			<sendOnFailure>true</sendOnFailure>
 			<sendOnSuccess>false</sendOnSuccess>

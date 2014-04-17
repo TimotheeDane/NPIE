@@ -20,15 +20,17 @@ public class Montant {
 		this.unite = unite;
 	}
 	
-        //conversion as a function of the type of conversion
+        //conversion from a unit to another
 	public void convert(Montant valDep) {
 		double val = valDep.getValeur();
                 
 		Unite unit = valDep.getUnite();
                 Conversion conv = unit.getConv();
-
-                //retrieving type
-                //call the corresponding calculation
+                
+                /* the methods will change depending on the type of conversion
+                 * first step of the conversion : from the unit of the beginning
+                 * to the standard unit
+                 */
 		switch (conv.getType()) {
 		case ADDITION:
 			val = conv.calculAdd(val);
@@ -43,7 +45,7 @@ public class Montant {
 			break;
 		}
 		
-                //retrieving the value
+                //second step : from the standard unit to the unit of the end
                 conv = unite.getConv();
                 valeur = conv.getValeur();
 		switch (conv.getType()) {
@@ -62,10 +64,11 @@ public class Montant {
 			break;
 		}
 		
+                //give the result for the unit that was chosen by the user
 		valeur = val;
 	}
 	
-        //getter and setter
+        //getters and setters
 	public double getValeur() {
 		return valeur;
 	}

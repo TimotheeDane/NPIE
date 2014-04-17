@@ -39,5 +39,3 @@ HORS-SYSTEME ; kelvin ; 4 ; 1 ; -273.15
 HORS-SYSTEME ; reaumur ; 4 ; 2 ; 1.25
 HORS-SYSTEME ; newton ; 4 ; 2 ; 3.030303
 HORS-SYSTEME ; rankine ; 4 ; 3 ; 491.67/0.555555
-METRIQUE ; couilles ; 3 ; 1 ; 10.0
-METRIQUE ; kmm ; 1 ; 2 ; 10000.0

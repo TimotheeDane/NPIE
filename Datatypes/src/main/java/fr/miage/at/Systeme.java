@@ -18,7 +18,7 @@ public class Systeme {
 		this.nom = nom;
 	}
 
-        //getter and setter
+        //getters and setters
 	public List<Unite> getUnit() {
 		return unit;
 	}

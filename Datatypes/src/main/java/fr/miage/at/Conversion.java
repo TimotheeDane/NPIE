@@ -62,20 +62,21 @@ public class Conversion {
         
         //operations
         
-        //calculating a complex-valued
+        //first step of the complex type conversion
+        //the complex conversion is done with the two types of calcul
         public double calculComplexe(double val){
             val = val - valeur;
             val = val * valeurComplexe;
             return val;
         }
         
-        //calculating a value from the addition
+        //first step of the addition type conversion
         public double calculAdd(double val){
             val = val - valeur;
             return val;
         }
         
-        //calculating a value by multiplication
+        //first step of the multiplication type conversion
         public double calculMul(double val){
             val = val * valeur;
             return val;

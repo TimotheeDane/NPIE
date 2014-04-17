@@ -23,7 +23,7 @@ public class Unite {
 	
 	public Unite() {}
 
-        //getter and setter
+        //getters and setters
 	public String getNom() {
 		return nom;
 	}

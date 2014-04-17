@@ -33,7 +33,7 @@ public class ConvertirUnite {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-                //initialization data memory
+                //initializing data memory
 		init();
 		Scanner scan = new Scanner(System.in);
 		boolean menu = true;
@@ -55,11 +55,11 @@ public class ConvertirUnite {
 				menuConversion(scan);
 				break;
 			case 2:
-                                //add new unit
+                                //add a new unit
 				menuAjout(scan);
 				break;
 			case 3:
-                                //display available unit
+                                //display available units
                                 affichage(scan);
 				break;
 			case 0:
@@ -75,7 +75,7 @@ public class ConvertirUnite {
 		scan.close();
 	}
 
-        //initialization function from file
+        //function that initializes reading through the file
 	public static void init() {
                 listeSystemes = new ArrayList<Systeme>();
 		String fichier = "src/main/java/fr/miage/at/convert";
@@ -112,7 +112,7 @@ public class ConvertirUnite {
 				}
 
 				Conversion conv;
-                                //recovery type conversion
+                                //retrieve the conversion type
                                 ligneF3 = ligneFichier[3];
                                 ligneF4 = ligneFichier[4];
 				if (ligneF3.equals("3")) {                                      
@@ -127,7 +127,7 @@ public class ConvertirUnite {
 							Double.parseDouble(ligneF4), 0);
 				}
 
-                                //recovery on the type of unit
+                                //retrieve the unit type
                                 ligneF = ligneFichier[2];
 				TypeUnite nouveauType = new TypeUnite(Integer.parseInt(ligneF));
                                 ligneF = ligneFichier[1];
@@ -163,9 +163,10 @@ public class ConvertirUnite {
 	}
 
         /**
-	 * @param scan
+	 * @param scan read what the user types
+         * Conversion from a unit chosen by the user
+         * to another unit chosen by him
 	 */
-        //convert between 2 units
 	public static void menuConversion(Scanner scan) {
 		String rep = "";
 		double val = 0.0;
@@ -182,11 +183,11 @@ public class ConvertirUnite {
                 String tempName;
                 
 		boolean trouve = false;
-                //get the starting unit will be converted
+                //get the starting unit that will be converted
 		while (!trouve) {
 			System.out.print("Unite de depart : ");
 			rep = scan.nextLine();
-                        //way verification of the existence of units
+                        //the unit has to exist to be accepted
 			for (cpt1 = 0; cpt1 < listeSystemes.size(); cpt1++) {
                                 tempSys = listeSystemes.get(cpt1);
                                 tempUnit = tempSys.getUnit();
@@ -206,7 +207,7 @@ public class ConvertirUnite {
 		}
 
 		trouve = false;
-                //retrieving the value to convert
+                //retrieve the value to convert
 		while (!trouve) {
 			try {
 				System.out.print("Valeur de l'unite de depart : ");
@@ -220,7 +221,7 @@ public class ConvertirUnite {
 			}
 		}
 
-                //recovery unit of arrival
+                //get the unit that the user wants in the end
 		trouve = false;
 		while (!trouve) {
 			System.out.print("Unite d'arrivee : ");
@@ -246,7 +247,7 @@ public class ConvertirUnite {
 		valArr.setUnite(uniteArr);
                 
 		valArr.convert(valDep);
-                //display the value of the converted unit
+                //return the value converted
 		System.out.println("Valeur de l'unite d'arrivee : "
 				+ valArr.getValeur());
 	}
@@ -254,7 +255,7 @@ public class ConvertirUnite {
          /**
 	 * @param scan
 	 */
-        //add new unit
+        //add a new unit
 	public static void menuAjout(Scanner scan) {
 		boolean trouveSys = false;
 		String systeme = "";
@@ -268,7 +269,7 @@ public class ConvertirUnite {
                 String tempName;
                 Conversion tempConv;
                 
-                //verification of the existence of the system that contains the new unit
+                //verification of the existence of the system that will contain the new unit
 		while (!trouveSys) {
 			System.out
 					.println("Dans quel systeme fait partie l'unite que vous voulez ajouter ? (METRIQUE / IMPERIAL / HORS-SYSTEME)");
@@ -283,7 +284,7 @@ public class ConvertirUnite {
 			}
 		}
 
-                //recovery system
+                //retrieve the system
 		Systeme syst = null;
                 String listName;
 		for (Systeme liste : listeSystemes) {
@@ -297,7 +298,7 @@ public class ConvertirUnite {
 		int cpt = 0;
 		boolean trouve = false;
 		TypeUnite typ = null;
-                //recovery on the type of unit
+                //retrieve the type of the unit
 		System.out.println("De quel type votre unite va-t-elle faire partie ?");
 		String type = scan.nextLine();
                 
@@ -334,7 +335,7 @@ public class ConvertirUnite {
 			System.out.println("Type inexistant");	
 		}
 		
-                //add unit
+                //add a unit
 		String unite = "";
 		if (trouveSys) {
 			trouveSys = false;
@@ -366,7 +367,7 @@ public class ConvertirUnite {
                         String etalon = "";
                         trouve = false;
                         cpt = 0;
-                        //recovery units standard
+                        //retrieve the unit standard
                         for (Systeme liste : listeSystemes) {
                                 tempUnit = liste.getUnit();
                                 while (!trouve && cpt < tempUnit.size()) {
@@ -386,8 +387,8 @@ public class ConvertirUnite {
                         if (!trouve) {
                                 System.out.println("Fichier corrompu. Pas d'unite etalon pour ce type");
                         } else {
-                                // recovery information conversion 
-                                // type of operation and value for conversion to the unit etalon
+                                // retrieve the conversion that contains
+                                // the type of operation and value for conversion to the unit standard
                                 trouveSys = false;
                                 System.out.println("Quel type d'operation pour convertir vers l'unite " + etalon + " ? (MULTIPLICATION / ADDITION / COMPLEXE)");
                                 String operation = scan.nextLine();
@@ -430,35 +431,35 @@ public class ConvertirUnite {
                                         }
                                 }
                         }
-                        //addition of units in the current memory
+                        //addition of the new unit in the current list that was loaded at the beginning
                         ajoutMemoire(ajoutLigne);
-                        //addition of units in the file
+                        //addition of the new unit in the file
                         ajoutFichier(ajoutLigne);
 		}
 	}
 	
          /**
-	 * @param ajoutLigne
+	 * @param ajoutLigne is the line that contains the unit
+         * addition of the new unit in the memory
 	 */
-        //addition of units in the memory
 	public static void ajoutMemoire(String ajoutLigne){
             int cpt;
             String ligneF0, ligneF1, ligneF2,ligneF3, ligneF4;
             Systeme syst;
             String name;
             String comp1, comp0;
-            //path of systems
+            //list of systems
             for (cpt = 0 ; cpt < listeSystemes.size() ; cpt++) {
                 String[] ligneFichier = ajoutLigne.split(" ; ");
                 syst = listeSystemes.get(cpt);
                 name = syst.getNom();
                 ligneF0 = ligneFichier[0];
-                //recovery system
+                //retrieve the system
                 if (name.equals(ligneF0)) {
                     Conversion conv;
                     ligneF3 = ligneFichier[3];
                     ligneF4 = ligneFichier[4];
-                    //recovery type of conversion
+                    //retrieve the type of conversion
                     if (ligneF3.equals("3")) {                        
                         String[] complexe = ligneF4.split("/");
                         comp0 = complexe[0];
@@ -473,7 +474,7 @@ public class ConvertirUnite {
 
                     ligneF2 = ligneFichier[2];
                     ligneF1 = ligneFichier[1];
-                    //addition to the type of unit and the unit
+                    //add the new objects to the types of units and the units
                     TypeUnite nouveauType = new TypeUnite(Integer.parseInt(ligneF2));
                     Unite nouvelleUnite = new Unite(ligneF1, nouveauType, conv);
 
@@ -486,10 +487,9 @@ public class ConvertirUnite {
          }
 	
          /**
-	 * @param ajoutLigne
+	 * @param ajoutLigne is the line that will be added in the file
+         * add the unit in the file by writing in it
 	 */
-         //add the file unit
-         //write the line in the file
 	public static void ajoutFichier(String ajoutLigne){
             String adressedufichier = "src/main/java/fr/miage/at/convert";
             try
@@ -506,9 +506,9 @@ public class ConvertirUnite {
         }
 
          /**
-	 * @param scan
+	 * @param scan read what the user types
+         * display the existing units
 	 */
-        //display units available
         public static void affichage(Scanner scan){
             String reponse;
             int cptAffiche;
@@ -520,7 +520,7 @@ public class ConvertirUnite {
             Unite unit;
             TypeUnite typeUnit;
             
-            //recovery system
+            //retrieve system
             while (!trouveSys) {
                     System.out
                                     .println("Dans quel systeme fait partie l'unite que vous voulez afficher ? (METRIQUE / IMPERIAL / HORS-SYSTEME)");
@@ -545,7 +545,7 @@ public class ConvertirUnite {
                 }
             }
             
-            //display units 10 through 10
+            //display units 10 by 10
             int nonFin = 0;
             listeUnite = syst.getUnit();
             cptAffiche = listeUnite.size();
@@ -556,7 +556,7 @@ public class ConvertirUnite {
                     System.out.println(unit.getNom() + " : " + typeUnit.getIntitule());
                    
                     if((cpt+1)%10 == 0 && cpt != 0 && (cpt+1) != cptAffiche){
-                        //asks the user whether to continue the display
+                        //asks the user if he wants to continue the display
                         System.out.println("Souhaitez-vous continuer l'affichage ?(O/N)");
                         reponse = scan.nextLine();
                         reponse = reponse.toUpperCase();
